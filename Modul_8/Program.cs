@@ -25,6 +25,16 @@ namespace Modul_8
                     Console.WriteLine($"Метка: {drive.VolumeLabel}");
                 }
             }
+            GetCatalog();
+        }
+    }
+
+    static void GetCatalogs()
+    {
+        string dirName = @"C:\\"; //прописываем путь к корневой директории
+        if (Directory.Exists(dirName) ) //проверим, что директория существует
+        {
+
         }
     }
 
