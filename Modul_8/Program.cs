@@ -5,219 +5,220 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Data;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Modul_8
 {
-   /* internal class Program
-    {
-        static void Main(string[] args)
-        {
-            //получим системные диски
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            //пробежимся по дискам и выведем их свойства
-            foreach (DriveInfo drive in drives)
-            {
-                Console.WriteLine($"Название: {drive.Name}");
-                Console.WriteLine($"Тип: {drive.DriveType}");
-                if (drive.IsReady)
-                {
-                    Console.WriteLine($"Объем: {drive.TotalSize}");
-                    Console.WriteLine($"Свободно: {drive.TotalFreeSpace}");
-                    Console.WriteLine($"Метка: {drive.VolumeLabel}");
-                }
-            }
-            GetCatalogs(); //вызов метода для получения директорий
-        }
+    /* internal class Program
+     {
+         static void Main(string[] args)
+         {
+             //получим системные диски
+             DriveInfo[] drives = DriveInfo.GetDrives();
+             //пробежимся по дискам и выведем их свойства
+             foreach (DriveInfo drive in drives)
+             {
+                 Console.WriteLine($"Название: {drive.Name}");
+                 Console.WriteLine($"Тип: {drive.DriveType}");
+                 if (drive.IsReady)
+                 {
+                     Console.WriteLine($"Объем: {drive.TotalSize}");
+                     Console.WriteLine($"Свободно: {drive.TotalFreeSpace}");
+                     Console.WriteLine($"Метка: {drive.VolumeLabel}");
+                 }
+             }
+             GetCatalogs(); //вызов метода для получения директорий
+         }
 
 
-        static void GetCatalogs()
-        {
-            string dirName = @"C:\\"; //прописываем путь к корневой директории
-            if (Directory.Exists(dirName)) //проверим, что директория существует
-            {
-                Console.WriteLine("Папки");
-                string[] dirs = Directory.GetDirectories(dirName); //получим все директории корневого каталога
+         static void GetCatalogs()
+         {
+             string dirName = @"C:\\"; //прописываем путь к корневой директории
+             if (Directory.Exists(dirName)) //проверим, что директория существует
+             {
+                 Console.WriteLine("Папки");
+                 string[] dirs = Directory.GetDirectories(dirName); //получим все директории корневого каталога
 
-                foreach (string dir in dirs) //выведем их все
-                    Console.WriteLine(dir);
+                 foreach (string dir in dirs) //выведем их все
+                     Console.WriteLine(dir);
 
-                Console.WriteLine();
-                Console.WriteLine("Файлы");
-                string[] files = Directory.GetFiles(dirName); // получим все файлы корневого каталога
+                 Console.WriteLine();
+                 Console.WriteLine("Файлы");
+                 string[] files = Directory.GetFiles(dirName); // получим все файлы корневого каталога
 
-                foreach (string file in files) //выведем их все
-                    Console.WriteLine(file);
+                 foreach (string file in files) //выведем их все
+                     Console.WriteLine(file);
 
-                try
-                {
-                    DirectoryInfo dirinfo = new DirectoryInfo(@"C:\\");
-                    if (dirinfo.Exists)
-                    {
-                        Console.WriteLine(dirinfo.GetDirectories().Length + dirinfo.GetFiles().Length);
-                    }
-                    DirectoryInfo newDirectory = new DirectoryInfo(@"/newDirectory");
-                    if (!newDirectory.Exists)
-                        newDirectory.Create();
-                    Console.WriteLine(dirinfo.GetDirectories().Length + dirinfo.GetFiles().Length);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                 try
+                 {
+                     DirectoryInfo dirinfo = new DirectoryInfo(@"C:\\");
+                     if (dirinfo.Exists)
+                     {
+                         Console.WriteLine(dirinfo.GetDirectories().Length + dirinfo.GetFiles().Length);
+                     }
+                     DirectoryInfo newDirectory = new DirectoryInfo(@"/newDirectory");
+                     if (!newDirectory.Exists)
+                         newDirectory.Create();
+                     Console.WriteLine(dirinfo.GetDirectories().Length + dirinfo.GetFiles().Length);
+                 }
+                 catch (Exception e)
+                 {
+                     Console.WriteLine(e.Message);
+                 }
 
-                DirectoryInfo dirInfo = new DirectoryInfo(@"/User/Luft");
-                if (!dirInfo.Exists)
-                    dirInfo.Create();
+                 DirectoryInfo dirInfo = new DirectoryInfo(@"/User/Luft");
+                 if (!dirInfo.Exists)
+                     dirInfo.Create();
 
-                dirInfo.CreateSubdirectory("NewFolder");
-                dirInfo.CreateSubdirectory("SkillFactory");
+                 dirInfo.CreateSubdirectory("NewFolder");
+                 dirInfo.CreateSubdirectory("SkillFactory");
 
-                DirectoryInfo dirInfo3 = new DirectoryInfo(@"/Users/Альбина/Desktop");
-                if (!dirInfo3.Exists)
-                    dirInfo3.Create();
-                dirInfo3.CreateSubdirectory("testFolder");
-
-
-                // получение информации о каталоге
-                Console.WriteLine($"Название каталога: {dirInfo.Name}");
-                Console.WriteLine($"Полное название каталога: {dirInfo.FullName}");
-                Console.WriteLine($"Время создания каталога: {dirInfo.CreationTime}");
-                Console.WriteLine($"Корневой каталог: {dirInfo.Root}");
-            }
-            try //удаление папк со всем содержимым
-            {
-                DirectoryInfo dirInfo = new DirectoryInfo(@"/User/Luft/NewFolder");
-                dirInfo.Delete(true);
-                Console.WriteLine("Каталог удален");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            //перемещение каталога
-            DirectoryInfo dirInfo2 = new DirectoryInfo("/User/Luft/SkillFactory");
-            string newPath = "/User/Luft/SkillFactoryNew";
-            if (dirInfo2.Exists && !Directory.Exists(newPath))
-                dirInfo2.MoveTo(newPath);
-
-            //перемещение в корзину
-            try
-            {
-                DirectoryInfo dirInfo4 = new DirectoryInfo(@"/Users/Альбина/Desktop/testFolderNew");
-                string trashPath = "/Users/Альбина/Trash/testFolderNew";
-                dirInfo4.MoveTo(trashPath);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            try
-            {
-                DirectoryInfo dirInfo = new DirectoryInfo(@"/User/Luft/SkillFactory");
-                dirInfo.Delete(true); //удаление со всем содержимым
-                Console.WriteLine("Каталог удален");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
+                 DirectoryInfo dirInfo3 = new DirectoryInfo(@"/Users/Альбина/Desktop");
+                 if (!dirInfo3.Exists)
+                     dirInfo3.Create();
+                 dirInfo3.CreateSubdirectory("testFolder");
 
 
+                 // получение информации о каталоге
+                 Console.WriteLine($"Название каталога: {dirInfo.Name}");
+                 Console.WriteLine($"Полное название каталога: {dirInfo.FullName}");
+                 Console.WriteLine($"Время создания каталога: {dirInfo.CreationTime}");
+                 Console.WriteLine($"Корневой каталог: {dirInfo.Root}");
+             }
+             try //удаление папк со всем содержимым
+             {
+                 DirectoryInfo dirInfo = new DirectoryInfo(@"/User/Luft/NewFolder");
+                 dirInfo.Delete(true);
+                 Console.WriteLine("Каталог удален");
+             }
+             catch (Exception ex)
+             {
+                 Console.WriteLine(ex.Message);
+             }
+
+             //перемещение каталога
+             DirectoryInfo dirInfo2 = new DirectoryInfo("/User/Luft/SkillFactory");
+             string newPath = "/User/Luft/SkillFactoryNew";
+             if (dirInfo2.Exists && !Directory.Exists(newPath))
+                 dirInfo2.MoveTo(newPath);
+
+             //перемещение в корзину
+             try
+             {
+                 DirectoryInfo dirInfo4 = new DirectoryInfo(@"/Users/Альбина/Desktop/testFolderNew");
+                 string trashPath = "/Users/Альбина/Trash/testFolderNew";
+                 dirInfo4.MoveTo(trashPath);
+             }
+             catch (Exception ex)
+             {
+                 Console.WriteLine(ex.Message);
+             }
+             try
+             {
+                 DirectoryInfo dirInfo = new DirectoryInfo(@"/User/Luft/SkillFactory");
+                 dirInfo.Delete(true); //удаление со всем содержимым
+                 Console.WriteLine("Каталог удален");
+             }
+             catch (Exception ex)
+             {
+                 Console.WriteLine(ex.Message);
+             }
+         }
 
 
-        public class Drive
-        {
-            public Drive(string name, long totalSpace, long freeSpace)
-            {
-                Name = name;
-                TotalSpace = totalSpace;
-                FreeSpace = freeSpace;
-            }
-            public string Name { get; set; }
-            public long TotalSpace { get; set; }
-            public long FreeSpace { get; set; }
-
-            Dictionary<string, Folder> Folders = new Dictionary<string, Folder>();
-
-            public void CreateFolder(string name)
-            {
-                Folders.Add(name, new Folder());
-            }
-            public class Folder
-            {
-                public List<string> Files { get; set; } = new List<string>();
-            }
-        }
 
 
-        class FaleWriter
-        {
-            public static void Main()
-            {
-                string filePath = @"/User/Luft/SkillFactory/Studints.txt"; //укажем путь
-                if (!File.Exists(filePath)) //проверим существует ли файл по указанному пути
-                {
-                    //если не существует - создаем и записываем в строку
-                    using (StreamWriter sw = File.CreateText(filePath)) //конструкция будет рассмотрена в следующих юнитах
-                    {
-                        sw.WriteLine("Олег");
-                        sw.WriteLine("Дмитрий");
-                        sw.WriteLine("Иван");
-                    }
-                }
-                //откроем файл и прочитаем его содержимое
-                using (StreamReader sr = File.OpenText(filePath))
-                {
-                    string str = "";
-                    while ((str = sr.ReadLine()) != null) //пока не кончатся строки - считывем из файла по одной и выводим в консоль
-                    {
-                        Console.WriteLine(str);
-                    }
-                }
+         public class Drive
+         {
+             public Drive(string name, long totalSpace, long freeSpace)
+             {
+                 Name = name;
+                 TotalSpace = totalSpace;
+                 FreeSpace = freeSpace;
+             }
+             public string Name { get; set; }
+             public long TotalSpace { get; set; }
+             public long FreeSpace { get; set; }
 
-                string tempFile = Path.GetTempFileName(); //исползуем генерацию имени файла
-                var fileInfo = new FileInfo(tempFile); //создаем объект класса FileInfo
+             Dictionary<string, Folder> Folders = new Dictionary<string, Folder>();
 
-                //создаем файл и записываем в него
-                using (StreamWriter sw = fileInfo.CreateText())
-                {
-                    sw.WriteLine("Игорь");
-                    sw.WriteLine("Андрей");
-                    sw.WriteLine("Сергей");
-                }
-                //открывавем файл и читаем из него
-                using (StreamReader sr = fileInfo.OpenText())
-                {
-                    string str = "";
-                    while ((str = sr.ReadLine()) != null)
-                    {
-                        Console.WriteLine(str);
-                    }
-                }
-                try
-                {
-                    string tempFile2 = Path.GetTempFileName();
-                    var fileInfo2 = new FileInfo(tempFile2);
+             public void CreateFolder(string name)
+             {
+                 Folders.Add(name, new Folder());
+             }
+             public class Folder
+             {
+                 public List<string> Files { get; set; } = new List<string>();
+             }
+         }
 
-                    //убедимся что файл назначения точно отсутствует
-                    fileInfo2.Delete();
 
-                    //копируем информация
-                    fileInfo.CopyTo(tempFile2);
-                    Console.WriteLine($"{tempFile} скопирован в файл {tempFile2}.");
-                    //удаляем ранее созданный файл
-                    fileInfo.Delete();
-                    Console.WriteLine($"{tempFile} удален.");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Ошибка: {e}");
-                }
-            }
-        }
-    }*/
+         class FaleWriter
+         {
+             public static void Main()
+             {
+                 string filePath = @"/User/Luft/SkillFactory/Studints.txt"; //укажем путь
+                 if (!File.Exists(filePath)) //проверим существует ли файл по указанному пути
+                 {
+                     //если не существует - создаем и записываем в строку
+                     using (StreamWriter sw = File.CreateText(filePath)) //конструкция будет рассмотрена в следующих юнитах
+                     {
+                         sw.WriteLine("Олег");
+                         sw.WriteLine("Дмитрий");
+                         sw.WriteLine("Иван");
+                     }
+                 }
+                 //откроем файл и прочитаем его содержимое
+                 using (StreamReader sr = File.OpenText(filePath))
+                 {
+                     string str = "";
+                     while ((str = sr.ReadLine()) != null) //пока не кончатся строки - считывем из файла по одной и выводим в консоль
+                     {
+                         Console.WriteLine(str);
+                     }
+                 }
+
+                 string tempFile = Path.GetTempFileName(); //исползуем генерацию имени файла
+                 var fileInfo = new FileInfo(tempFile); //создаем объект класса FileInfo
+
+                 //создаем файл и записываем в него
+                 using (StreamWriter sw = fileInfo.CreateText())
+                 {
+                     sw.WriteLine("Игорь");
+                     sw.WriteLine("Андрей");
+                     sw.WriteLine("Сергей");
+                 }
+                 //открывавем файл и читаем из него
+                 using (StreamReader sr = fileInfo.OpenText())
+                 {
+                     string str = "";
+                     while ((str = sr.ReadLine()) != null)
+                     {
+                         Console.WriteLine(str);
+                     }
+                 }
+                 try
+                 {
+                     string tempFile2 = Path.GetTempFileName();
+                     var fileInfo2 = new FileInfo(tempFile2);
+
+                     //убедимся что файл назначения точно отсутствует
+                     fileInfo2.Delete();
+
+                     //копируем информация
+                     fileInfo.CopyTo(tempFile2);
+                     Console.WriteLine($"{tempFile} скопирован в файл {tempFile2}.");
+                     //удаляем ранее созданный файл
+                     fileInfo.Delete();
+                     Console.WriteLine($"{tempFile} удален.");
+                 }
+                 catch (Exception e)
+                 {
+                     Console.WriteLine($"Ошибка: {e}");
+                 }
+             }
+         }*/
+
 
     /*class BinaryExperiment
     {
@@ -270,7 +271,7 @@ namespace Modul_8
         }
 
     }*/
-
+    /*
         class Program
         {
             /*public static void Main()
@@ -293,7 +294,7 @@ namespace Modul_8
                     Console.WriteLine("Из файла считано: ");
                     Console.WriteLine(stringValue);
                 }
-            }*/
+            }
 
             public static void Main ()
             {
@@ -318,7 +319,83 @@ namespace Modul_8
                     Console.WriteLine(StringValue);
                 }
             }
+        }*/
+    //атрибут сериализации
+    [Serializable]
+    class Person
+    {
+        //простая модель класса
+        public string Name { get; set; }
+        public int Year { get; set; }
+
+        //метод - конструктор
+        public Person (string name, int year)
+        {
+            Name = name;
+            Year = year;
         }
+    }
+    //описываем наш класс и помечаем его атрибутом для последующей сериализации
+    [Serializable]
+    class Pet
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public Pet(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //объект для сериализации
+            var person = new Pet("Rex", 2);
+            Console.WriteLine("Объект создан");
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            //получаем потокб куда будем записывать сериализованный объект
+            using (var fs = new FileStream("myPets.dat", FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(fs, person);
+                Console.WriteLine("Объект сериализован");
+            }
+            //десериализация
+            using (var fs = new FileStream("myPets.dat", FileMode.OpenOrCreate))
+            {
+                var newPet = (Pet)formatter.Deserialize(fs);
+                Console.WriteLine("Объект десериализирован");
+                Console.WriteLine($"Имя: {newPet.Name} --- Возраст: {newPet.Age}");
+            }
+            Console.ReadLine();
+
+            var contact = new Contact("Men", 2335748, "email");
+            BinaryFormatter formatter1 = new BinaryFormatter();
+            using (var ct = new FileStream("myContact.dat", FileMode.OpenOrCreate))
+            {
+                formatter1.Serialize(ct, contact);
+
+            }
+        }
+        
+    }
+
+    [Serializable]
+    class Contact
+    {
+        public string Name { get; set; }
+        public long PhoneNumber { get; set; }
+        public string Email { get; set; }
+
+        public Contact(string name, long phoneNumber, string email)
+        {
+            Name = name;
+            PhoneNumber = phoneNumber;
+            Email = email;
+        }
+    }
 }
         
     
